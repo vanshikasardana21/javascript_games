@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Google Font */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 15px;
+      padding: 20px;
+      font-family: 'Poppins', sans-serif;
+      /* Light golden-green background */
+      color: #1a2f0a;
+      background: #eaf7c4;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(255, 235, 120, 0.7) 0%, transparent 45%),
+        radial-gradient(circle at 85% 75%, rgba(180, 220, 90, 0.6) 0%, transparent 50%),
+        repeating-linear-gradient(45deg, rgba(212, 175, 55, 0.08) 0px, rgba(212, 175, 55, 0.08) 2px,
+                                  rgba(154, 205, 50, 0.08) 2px, rgba(154, 205, 50, 0.08) 4px);
+      animation: bgShimmer 8s infinite alternate ease-in-out;
+    }
+
+    @keyframes bgShimmer {
+      0%   { background-color: #eaf7c4; }
+      50%  { background-color: #f3fbde; }
+      100% { background-color: #eaf7c4; }
+    }
+
+    /* Game heading – dark golden-green, crisp and light */
+    h3 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #3b5e1a;
+      text-shadow:
+        0 2px 0 #d4e157,
+        0 0 12px rgba(212, 175, 55, 0.5),
+        0 0 25px rgba(154, 205, 50, 0.4);
+      transition: transform 0.2s;
+    }
+
+    /* Instructions – readable dark green with a golden touch */
+    h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #3a541a;
+      text-shadow: 0 1px 2px rgba(255, 255, 200, 0.9), 0 0 10px rgba(212, 175, 55, 0.6);
+      text-align: center;
+      margin-bottom: 15px;
+      letter-spacing: 0.5px;
+      background: rgba(255, 250, 205, 0.85);
+      padding: 0.5rem 1.5rem;
+      border-radius: 40px;
+      backdrop-filter: blur(4px);
+      border: 1px solid #c5b358;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Main game board – light golden-green frame */
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 14px;
+      padding: 25px;
+      border: 2px solid #b8a22e;
+      border-radius: 25px;
+      background: rgba(255, 255, 240, 0.9);
+      box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.15),
+        0 0 40px rgba(212, 175, 55, 0.35),
+        0 0 80px rgba(154, 205, 50, 0.25),
+        inset 0 0 30px rgba(212, 175, 55, 0.2);
+      backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Soft sparkle dust inside the container */
+    .container::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 15% 25%, #d4af37 1.5px, transparent 1.5px),
+        radial-gradient(circle at 80% 70%, #8fbc4f 2px, transparent 2px),
+        radial-gradient(circle at 45% 85%, #c5a028 1.5px, transparent 1.5px),
+        radial-gradient(circle at 70% 15%, #6b8e23 2px, transparent 2px),
+        radial-gradient(circle at 30% 55%, #a3c93a 1.8px, transparent 1.8px);
+      background-size: 180px 180px;
+      opacity: 0.4;
+      pointer-events: none;
+      animation: twinkleDust 4s infinite alternate;
+    }
+
+    @keyframes twinkleDust {
+      0%   { opacity: 0.2; }
+      100% { opacity: 0.6; }
+    }
+
+    /* Top and bottom rows */
+    .top,
+    .bottom {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Common button style – medium dark base */
+    .btn {
+      width: 145px;
+      height: 145px;
+      border-radius: 25px;
+      border: 4px solid #ffffff;
+      cursor: pointer;
+      transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        filter 0.15s ease;
+      box-shadow:
+        0 8px 0 rgba(0, 0, 0, 0.3),
+        0 12px 25px rgba(0, 0, 0, 0.3),
+        0 0 25px rgba(255, 255, 255, 0.5),
+        inset 0 0 20px rgba(255, 255, 255, 0.6);
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    /* ---- Individual MEDIUM-DARK color variants ---- */
+
+    /* red → medium rose pink */
+    .red {
+      background: linear-gradient(145deg, #ffb3c6, #ff8fab, #f06292);
+      border-color: #ffffff;
+      box-shadow:
+        0 8px 0 #c2185b,
+        0 12px 25px rgba(0, 0, 0, 0.25),
+        0 0 35px #ff8fab,
+        inset 0 0 25px rgba(255, 255, 255, 0.7);
+    }
+
+    /* blue → medium mint green */
+    .blue {
+      background: linear-gradient(145deg, #a8e6cf, #7ddfb8, #4db6ac);
+      border-color: #ffffff;
+      box-shadow:
+        0 8px 0 #00695c,
+        0 12px 25px rgba(0, 0, 0, 0.25),
+        0 0 35px #7ddfb8,
+        inset 0 0 25px rgba(255, 255, 255, 0.7);
+    }
+
+    /* green → medium sky blue */
+    .green {
+      background: linear-gradient(145deg, #a8c8ff, #7da8ff, #5c8aff);
+      border-color: #ffffff;
+      box-shadow:
+        0 8px 0 #2c5aa0,
+        0 12px 25px rgba(0, 0, 0, 0.25),
+        0 0 35px #7da8ff,
+        inset 0 0 25px rgba(255, 255, 255, 0.7);
+    }
+
+    /* yellow → medium lavender */
+    .yellow {
+      background: linear-gradient(145deg, #c8a8ff, #a87dff, #9061ff);
+      border-color: #ffffff;
+      box-shadow:
+        0 8px 0 #5e35b1,
+        0 12px 25px rgba(0, 0, 0, 0.25),
+        0 0 35px #a87dff,
+        inset 0 0 25px rgba(255, 255, 255, 0.7);
+    }
+
+    /* Hover effect – brighter and lifted */
+    .btn:hover {
+      filter: brightness(1.15) saturate(1.2);
+      transform: translateY(-3px);
+      box-shadow:
+        0 11px 0 rgba(0, 0, 0, 0.2),
+        0 16px 30px rgba(0, 0, 0, 0.3),
+        0 0 45px #ffffff,
+        0 0 70px rgba(255, 255, 255, 0.7);
+    }
+
+    /* Click effect */
+    .btn:active {
+      transform: scale(0.94);
+    }
+
+    /* Simon sequence flash – brilliant white light */
+    .flash {
+      background: linear-gradient(145deg, #ffffff, #fefefe, #f0f0f0) !important;
+      border-color: #ffffff !important;
+      filter: brightness(2);
+      box-shadow:
+        0 0 30px #ffffff,
+        0 0 70px #ffffff,
+        0 0 100px rgba(255, 255, 255, 0.9),
+        inset 0 0 30px #ffffff !important;
+      transform: scale(0.96);
+    }
+
+    /* User-click flash – soft colored glow */
+    .userflash {
+      filter: brightness(1.4);
+      box-shadow:
+        0 0 35px rgba(255, 255, 255, 0.9),
+        0 0 60px rgba(255, 255, 255, 0.6),
+        inset 0 0 20px #ffffff;
+      transform: scale(0.95);
+      border-color: #ffffff !important;
+    }
+
+    /* Score display – dark panel with light golden numbers */
+    .score {
+      min-width: 150px;
+      min-height: 45px;
+      margin-top: 10px;
+      padding: 8px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid #b8860b;
+      border-radius: 12px;
+      background: rgba(30, 45, 10, 0.9);
+      color: #ffd966;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px #b8860b, 0 0 20px #9acd32;
+      box-shadow:
+        0 0 20px rgba(212, 175, 55, 0.5),
+        inset 0 0 15px rgba(154, 205, 50, 0.3);
+      backdrop-filter: blur(4px);
+    }
+
+    /* ---- GAME OVER – SOFTER RED ALERT ---- */
+    .error {
+      background: #d9534f !important;
+      border-color: #c9302c !important;
+      box-shadow:
+        0 0 25px #d9534f,
+        0 0 60px rgba(217, 83, 79, 0.6),
+        inset 0 0 25px rgba(255, 200, 200, 0.6) !important;
+      filter: brightness(1.1) saturate(1.2);
+      transform: scale(0.96);
+    }
+
+    /* Error message text style when game over – softer red */
+    .score.error {
+      background: #d9534f !important;
+      color: #ffffff !important;
+      border-color: #c9302c !important;
+      text-shadow: 0 0 15px #ffffff, 0 0 30px #ffcccc !important;
+      box-shadow: 0 0 25px #d9534f, 0 0 60px rgba(217, 83, 79, 0.6) !important;
+    }
+
+    /* Responsive design for mobile */
+    @media (max-width: 480px) {
+      body {
+        gap: 12px;
+        padding: 15px;
+      }
+
+      h3 {
+        font-size: 1.7rem;
+      }
+
+      h2 {
+        font-size: 0.9rem;
+      }
+
+      .container {
+        gap: 10px;
+        padding: 15px;
+        border-radius: 20px;
+      }
+
+      .top,
+      .bottom {
+        gap: 10px;
+      }
+
+      .btn {
+        width: min(35vw, 125px);
+        height: min(35vw, 125px);
+        border-radius: 20px;
+        border-width: 3px;
+      }
+    }
+
+    /* Respect reduced-motion preference */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+  </style>
+  <title>Golden Green Simon</title>
+</head>
+
+<body>
+  <h3>Simon Says</h3>
+  <h2>Press any key to start</h2>
+  <div class="container">
+    <div class="top">
+      <div class="red btn" id="red"></div>
+      <div class="blue btn" id="blue"></div>
+    </div>
+    <div class="bottom">
+      <div class="green btn" id="green"></div>
+      <div class="yellow btn" id="yellow"></div>
+    </div>
+  </div>
+  <div class="score"></div>
+  <script src="script.js"></script>
+</body>
+</html>
